@@ -1,0 +1,20 @@
+version :'3'
+  service: multi-level-running
+    container_name: multi-level-running
+    image : kanokpron10/multi-level:1
+    build:
+      context: .
+    ports:
+    - 3000:3000
+
+  database: multi-level-mariadb
+    container_name: multi-level-mariadb
+    image: mariadb:10.4.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mlm_dev
+      USERNAME_DB: mlm_dev
+      PASSWORD_DB: mlm_dev
+      DATABASE_NAME: mlm
+    ports:
+    - 3306:3306
