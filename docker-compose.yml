@@ -1,20 +1,29 @@
-version :'3'
-  service: multi-level-running
+version: '3'
+services:
+  multi-level-running:
     container_name: multi-level-running
     image : kanokpron10/multi-level:1
     build:
       context: .
-    ports:
-    - 3000:3000
-
-  database: multi-level-mariadb
-    container_name: multi-level-mariadb
-    image: mariadb:10.4.7
-    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: mlm_dev
       USERNAME_DB: mlm_dev
       PASSWORD_DB: mlm_dev
       DATABASE_NAME: mlm
+      HOST_DB: multi-level-mariadb
+      PORT_DB: 3306
+      TIME: 20190701 
+    ports:
+    - 3000:3000
+
+  multi-level-mariadb:
+    container_name: multi-level-mariadb
+    image: mariadb:10.4.7
+    environment:
+      MYSQL_ROOT_PASSWORD: mlm_dev
+      MYSQL_USER: mlm_dev
+      MYSQL_PASSWORD: mlm_dev
+      MYSQL_DATABASE: mlm
+    volumes:
+    - ./sql/prepared-data.sql:/docker-entrypoint-initdb.d
     ports:
     - 3306:3306
